@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE eagle SYSTEM "eagle.dtd">
-<eagle version="9.6.2">
+<eagle version="9.6.0">
 <drawing>
 <settings>
 <setting alwaysvectorfont="no"/>
@@ -15873,6 +15873,9 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <part name="TP16" library="testpad" library_urn="urn:adsk.eagle:library:385" deviceset="TP" device="PAD1-17" package3d_urn="urn:adsk.eagle:package:27949/1"/>
 <part name="JP5" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
 <part name="JP6" library="pinhead" library_urn="urn:adsk.eagle:library:325" deviceset="PINHD-1X2" device="" package3d_urn="urn:adsk.eagle:package:22435/2"/>
+<part name="R55" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="0R"/>
+<part name="R56" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="0R"/>
+<part name="R57" library="rcl" library_urn="urn:adsk.eagle:library:334" deviceset="R-EU_" device="R0603" package3d_urn="urn:adsk.eagle:package:23555/3" value="0R"/>
 </parts>
 <sheets>
 <sheet>
@@ -16904,6 +16907,18 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <instance part="JP6" gate="G$1" x="154.94" y="-444.5" smashed="yes" rot="R270">
 <attribute name="NAME" x="160.655" y="-438.15" size="1.778" layer="95" rot="R270"/>
 <attribute name="VALUE" x="149.86" y="-438.15" size="1.778" layer="96" rot="R270"/>
+</instance>
+<instance part="R55" gate="G$1" x="152.4" y="-198.12" smashed="yes" rot="R90" grouprefs="ADC">
+<attribute name="NAME" x="155.7274" y="-197.104" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="155.702" y="-201.93" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R56" gate="G$1" x="152.4" y="-281.94" smashed="yes" rot="R90" grouprefs="ADC">
+<attribute name="NAME" x="155.7274" y="-280.924" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="155.702" y="-285.75" size="1.778" layer="96" rot="R90"/>
+</instance>
+<instance part="R57" gate="G$1" x="152.4" y="-365.76" smashed="yes" rot="R90" grouprefs="ADC">
+<attribute name="NAME" x="155.7274" y="-364.744" size="1.778" layer="95" rot="R90"/>
+<attribute name="VALUE" x="155.702" y="-369.57" size="1.778" layer="96" rot="R90"/>
 </instance>
 </instances>
 <busses>
@@ -19484,6 +19499,9 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <wire x1="152.4" y1="-264.16" x2="152.4" y2="-274.32" width="0.1524" layer="91" grouprefs="ADC"/>
 <wire x1="152.4" y1="-274.32" x2="157.48" y2="-274.32" width="0.1524" layer="91" grouprefs="ADC"/>
 <junction x="157.48" y="-274.32" grouprefs="ADC"/>
+<pinref part="R56" gate="G$1" pin="2"/>
+<wire x1="152.4" y1="-276.86" x2="152.4" y2="-274.32" width="0.1524" layer="91" grouprefs="ADC"/>
+<junction x="152.4" y="-274.32"/>
 </segment>
 </net>
 <net name="N$48" class="0">
@@ -19510,6 +19528,9 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <wire x1="152.4" y1="-358.14" x2="157.48" y2="-358.14" width="0.1524" layer="91" grouprefs="ADC"/>
 <junction x="157.48" y="-358.14" grouprefs="ADC"/>
 <pinref part="U15" gate="G$1" pin="XTAL1/CLKIN"/>
+<pinref part="R57" gate="G$1" pin="2"/>
+<wire x1="152.4" y1="-360.68" x2="152.4" y2="-358.14" width="0.1524" layer="91" grouprefs="ADC"/>
+<junction x="152.4" y="-358.14" grouprefs="ADC"/>
 </segment>
 </net>
 <net name="N$7" class="0">
@@ -19536,6 +19557,9 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <wire x1="152.4" y1="-190.5" x2="157.48" y2="-190.5" width="0.1524" layer="91" grouprefs="ADC"/>
 <junction x="157.48" y="-190.5" grouprefs="ADC"/>
 <pinref part="U13" gate="G$1" pin="XTAL1/CLKIN"/>
+<pinref part="R55" gate="G$1" pin="2"/>
+<wire x1="152.4" y1="-193.04" x2="152.4" y2="-190.5" width="0.1524" layer="91" grouprefs="ADC"/>
+<junction x="152.4" y="-190.5" grouprefs="ADC"/>
 </segment>
 </net>
 <net name="MCO" class="0">
@@ -19578,6 +19602,31 @@ new: Attribute TP_SIGNAL_NAME&lt;br&gt;
 <pinref part="JP5" gate="G$1" pin="2"/>
 <wire x1="149.86" y1="-401.32" x2="152.4" y2="-401.32" width="0.1524" layer="91"/>
 <wire x1="152.4" y1="-401.32" x2="152.4" y2="-406.4" width="0.1524" layer="91"/>
+</segment>
+</net>
+<net name="ADC_CLK" class="0">
+<segment>
+<pinref part="U17" gate="G$1" pin="PA1"/>
+<wire x1="208.28" y1="-154.94" x2="205.74" y2="-154.94" width="0.1524" layer="91"/>
+<label x="205.74" y="-154.94" size="1.27" layer="95" rot="R180" xref="yes"/>
+</segment>
+<segment>
+<pinref part="R55" gate="G$1" pin="1"/>
+<wire x1="152.4" y1="-203.2" x2="152.4" y2="-205.74" width="0.1524" layer="91" grouprefs="ADC"/>
+<wire x1="152.4" y1="-205.74" x2="154.94" y2="-205.74" width="0.1524" layer="91" grouprefs="ADC"/>
+<label x="154.94" y="-205.74" size="1.27" layer="95" xref="yes" grouprefs="ADC"/>
+</segment>
+<segment>
+<pinref part="R56" gate="G$1" pin="1"/>
+<wire x1="152.4" y1="-287.02" x2="152.4" y2="-289.56" width="0.1524" layer="91" grouprefs="ADC"/>
+<wire x1="152.4" y1="-289.56" x2="154.94" y2="-289.56" width="0.1524" layer="91" grouprefs="ADC"/>
+<label x="154.94" y="-289.56" size="1.27" layer="95" xref="yes" grouprefs="ADC"/>
+</segment>
+<segment>
+<pinref part="R57" gate="G$1" pin="1"/>
+<wire x1="152.4" y1="-370.84" x2="152.4" y2="-373.38" width="0.1524" layer="91" grouprefs="ADC"/>
+<wire x1="152.4" y1="-373.38" x2="154.94" y2="-373.38" width="0.1524" layer="91" grouprefs="ADC"/>
+<label x="154.94" y="-373.38" size="1.27" layer="95" xref="yes" grouprefs="ADC"/>
 </segment>
 </net>
 </nets>
