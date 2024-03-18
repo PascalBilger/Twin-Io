@@ -61,8 +61,6 @@ void Error_Handler(void);
 #define SW0_GPIO_Port GPIOC
 #define SW1_Pin GPIO_PIN_15
 #define SW1_GPIO_Port GPIOC
-#define SW2_Pin GPIO_PIN_0
-#define SW2_GPIO_Port GPIOD
 #define ADC0_DONE_Pin GPIO_PIN_0
 #define ADC0_DONE_GPIO_Port GPIOC
 #define ADC0_DRDY_Pin GPIO_PIN_1
@@ -72,10 +70,12 @@ void Error_Handler(void);
 #define ADC1_DONE_GPIO_Port GPIOC
 #define ADC1_DRDY_Pin GPIO_PIN_3
 #define ADC1_DRDY_GPIO_Port GPIOC
+#define ADC1_DRDY_EXTI_IRQn EXTI3_IRQn
 #define ADC2_DONE_Pin GPIO_PIN_4
 #define ADC2_DONE_GPIO_Port GPIOC
 #define ADC2_DRDY_Pin GPIO_PIN_5
 #define ADC2_DRDY_GPIO_Port GPIOC
+#define ADC2_DRDY_EXTI_IRQn EXTI9_5_IRQn
 #define LED0_Pin GPIO_PIN_0
 #define LED0_GPIO_Port GPIOB
 #define LED1_Pin GPIO_PIN_1
