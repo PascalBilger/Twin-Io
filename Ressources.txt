@@ -1,0 +1,32 @@
+http://gammacardiosoft.org/openecg.htm
+https://github.com/kevmasajedi/Cardiobit/tree/main
+
+https://www.analog.com/en/resources/analog-dialogue/articles/ecg-front-end-design-simplified.html
+https://www.ti.com/lit/an/sbaa160a/sbaa160a.pdf?ts=1709199880734&ref_url=https%253A%252F%252Fwww.google.com%252F
+
+https://www.mdpi.com/2079-9292/12/11/2389
+https://geekymedics.com/understanding-an-ecg/ Description of the different leads
+
+https://www.ti.com/solution/electrocardiogram-ecg?variantid=34085&subsystemid=22006
+
+Schematic 
+https://www.ti.com/lit/ds/symlink/ads1298.pdf?ts=1709219900598&ref_url=https%253A%252F%252Fwww.ti.com%252Fproduct%252FADS1298
+
+ADC: 
+MCP3561/2/4R
+ADS131M04
+ads1258
+
+Opamp: 
+AD620 works for sure, costs 10.-
+INA126 might work too, costs 2.7CHF
+
+Different leads are measured at different times with usual ECG.
+
+Maybe set reference to average of RR, RL, LA, LL and record all voltages to have as much data as possible.
+
+Frequency: 0.05-100Hz
+https://www.analog.com/en/resources/analog-dialogue/articles/ecg-front-end-design-simplified.html
+
+Noise over the 150Hz bandwidth should be 30uVRMS max
+https://www.ti.com/lit/an/sbaa160a/sbaa160a.pdf?ts=1709199880734&ref_url=https%253A%252F%252Fwww.google.com%252F
