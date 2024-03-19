@@ -5,8 +5,18 @@ Firmware/Prototype/Twin_Io/Drivers
 Firmware/Prototype/Twin_Io/Twin_Io Debug.launch
 Firmware/Prototype/Twin_Io/Core/Inc/dma.h
 Firmware/Prototype/Twin_Io/Core/Inc/main.h
+Firmware/Prototype/Twin_Io/Core/Inc/gpio.h
+Firmware/Prototype/Twin_Io/Core/Inc/spi.h
+Firmware/Prototype/Twin_Io/Core/Inc/tim.h
 Firmware/Prototype/Twin_Io/Core/Inc/stm32f1xx_hal_conf.h
+Firmware/Prototype/Twin_Io/Core/Inc/stm32f1xx_it.h
 Firmware/Prototype/Twin_Io/Core/Inc/usart.h
 Firmware/Prototype/Twin_Io/Core/Src/dma.c
-Firmware/Prototype/Twin_Io/Core/Src/dma.c
+Firmware/Prototype/Twin_Io/Core/Src/spi.c
+Firmware/Prototype/Twin_Io/Core/Src/stm32f1xx_hal_msp.c
+Firmware/Prototype/Twin_Io/Core/Src/stm32f1xx_it.c
+Firmware/Prototype/Twin_Io/Core/Src/system_stm32f1xx.c
+Firmware/Prototype/Twin_Io/Core/Src/tim.c
+Firmware/Prototype/Twin_Io/Core/Src/usart.c
+Firmware/Prototype/Twin_Io/Core/Src/gpio.c
 Firmware/Prototype/Twin_Io/STM32F105R8TX_FLASH.ld
