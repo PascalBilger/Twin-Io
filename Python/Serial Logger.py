@@ -1,6 +1,17 @@
 import serial
+import serial.tools.list_ports
 
-serial_port = 'COM4'  # Update with your serial port
+
+
+def list_available_ports():
+    ports = serial.tools.list_ports.comports()
+    available_ports = []
+    for port, desc, hwid in sorted(ports):
+        available_ports.append((port, desc, hwid))
+    return available_ports
+
+print(list_available_ports())
+serial_port = str(input("Select COM Port"))  # Update with your serial port
 baud_rate = 3000000  # Update with your baud rate
 log_file = 'output.log'
 
