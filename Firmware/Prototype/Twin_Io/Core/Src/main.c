@@ -139,7 +139,7 @@ int main(void)
   HAL_Delay(100);
   u8_AllADCWriteReg(0xB, 0b01101000);
   HAL_Delay(100);
-  u8_AllADCWriteReg(0xB, 0b00111100);
+	u8_AllADCWriteReg(0xC, 0b00111100);
   HAL_Delay(100);
   u8_AllADCCommand(ADC_CMD_WAKEUP);	//Wake the ADC up and start measuring
   HAL_Delay(100);
