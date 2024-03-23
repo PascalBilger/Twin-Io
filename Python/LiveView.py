@@ -17,8 +17,8 @@ ChartNames = ["LEAD_I", "LEAD_II", "LEAD_III", "LEAD_aVR", "LEAD_aVL", "LEAD_aVF
 AdcDataLen          = 14    # Specify how many bytes each measurement of an ADC contains
 NumAdc              = 3     # Specify the number of ADCs used
 NumChannelPerAdc    = 4     # Specify the number of channels per ADCW
-NumSecondsToGraph   = 5    # Specify the number of seconds to put into the graph
-AutoScaleYAxis      = False # Set to true to autoscale the axis of the displayed graphs
+NumSecondsToGraph   = 5     # Specify the number of seconds to put into the graph
+AutoScaleYAxis      = True  # Set to true to autoscale the axis of the displayed graphs
                             # Set to false to have the same scale on all graphs to zomm around manually
 
 AdcResolution = 23
@@ -69,6 +69,8 @@ while(True):
     #Extract all the ADC values from the data
     while(OFFSET < len(data) - AdcDataLen):
         ADCValues, OFFSET = Lib.getAdcVals(data, OFFSET, ADCValues)
+        if(int(OFFSET / AdcDataLen) % 100000 == 0):  #Every 100000 Bytes
+            print(f'{OFFSET} of {len(data)} Bytes processed. {OFFSET / len(data) * 100}% processed')
         OFFSET += AdcDataLen
 
     #get the minimal number of samples for any channel and trim all channels to that length
@@ -132,9 +134,9 @@ while(True):
         x = np.linspace(0, NumSecondsToGraph, len(FilteredLeadValues[0]))  # Assume the length of x is the same for all channels
         plt.ion()  # Turn on interactive mode
         if(AutoScaleYAxis):
-            fig, axs = plt.subplots(4, 3, figsize = (15,15),sharex=True, sharey=True, layout="constrained")
-        else:
             fig, axs = plt.subplots(4, 3, figsize = (15,15),sharex=False, sharey=False, layout="constrained")
+        else:
+            fig, axs = plt.subplots(4, 3, figsize = (15,15),sharex=True,  sharey=True,  layout="constrained")
 
         plt.autoscale()
         plt.tight_layout()
@@ -148,7 +150,7 @@ while(True):
     for i in range(12):
         ax = axs[i // 3, i % 3]
         ax.set_ylim(min(FilteredLeadValues[i]), max(FilteredLeadValues[i]))
-        lines[i].set_xdata(np.linspace(0, 10, len(FilteredLeadValues[i])))  # Update x-data
+        lines[i].set_xdata(np.linspace(0, len(FilteredLeadValues[i]) / sample_rate, len(FilteredLeadValues[i])))  # Update x-data
         lines[i].set_ydata(FilteredLeadValues[i])  # Update y-data
     if FirstLoop:
         FirstLoop = False
