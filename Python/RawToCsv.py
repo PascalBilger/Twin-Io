@@ -7,6 +7,7 @@ import scipy.fftpack
 from scipy.signal import butter, filtfilt
 import Lib
 
+AdcDataLen          = 14    # Specify how many bytes each measurement of an ADC contains
 
 sample_rate = 2000  # Hz
 sample_period = 1 / sample_rate
@@ -15,14 +16,12 @@ FilePath = filedialog.askopenfilename()
 with open(FilePath, 'rb') as file:
     data = file.read()
 
-data = data[1000:] ##Remove the start
 ADCValues = [[] for _ in range(12)]
 
 OFFSET = Lib.getOffset(data)
 
-
-while(len(data) < OFFSET - 14):
-    ADCValues = Lib.getAdcVals(data, OFFSET, ADCValues) #Extract the 4 ADC Readings at position OFFSET
+while(OFFSET < len(data) - AdcDataLen):
+    ADCValues, OFFSET = Lib.getAdcVals(data, OFFSET, ADCValues) #Extract the 4 ADC Readings at position OFFSET
     OFFSET += 14                                        #Increase the offset by 14 because the number of Bytes sent by each ADC is 14 bytes
 
 

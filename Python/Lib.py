@@ -54,4 +54,4 @@ def getAdcVals(data, offset, ADCValues):
                 ADCValues[i+4*AdcNum].append(channels[i])
             except:
                 pass
-    return ADCValues
+    return ADCValues, offset
