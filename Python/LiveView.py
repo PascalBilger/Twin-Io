@@ -1,43 +1,10 @@
 from tkinter import filedialog
-from scipy import signal
-from scipy.fftpack import fft
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.fftpack
-from scipy.signal import butter, filtfilt
-
+import Lib
 
 sample_rate = 2000  # Hz
 sample_period = 1 / sample_rate
-
-# Create a notch filter to remove 50Hz component
-def create_notch_filter(frequency, sample_rate, Q=10):
-    nyquist = sample_rate / 2.0
-    notch_freq = frequency / nyquist
-    b, a = signal.iirnotch(notch_freq, Q)
-    return b, a
-
-# Apply the notch filter to remove 50Hz component
-def remove_50Hz(data, sample_rate):
-    b, a = create_notch_filter(50, sample_rate)
-    filtered_data = signal.filtfilt(b, a, data)
-    return filtered_data
-
-def remove_xHz(data, sample_rate, filterFrequency):
-    b, a = create_notch_filter(filterFrequency, sample_rate)
-    filtered_data = signal.filtfilt(b, a, data)
-    return filtered_data
-
-def butter_lowpass(cutoff, fs, order=5):
-    nyquist = 0.5 * fs
-    normal_cutoff = cutoff / nyquist
-    b, a = butter(order, normal_cutoff, btype='low', analog=False)
-    return b, a
-
-def butter_lowpass_filter(data, cutoff, fs, order=5):
-    b, a = butter_lowpass(cutoff, fs, order=order)
-    y = filtfilt(b, a, data)
-    return y
 
 FilePath = filedialog.askopenfilename()
 FirstLoop = True
@@ -45,65 +12,44 @@ FirstLoop = True
 fig, axs = 0,0 # init the variables for the plot
 lines = [] # init the variables for the plot
 
+AdcDataLen = 14         # Specify how many bytes each measurement of an ADC contains
+NumAdc = 3              # Specify the number of ADCs used
+NumChannelPerAdc = 4    # Specify the number of channels per ADC
+
 while(True):
+    #open the raw data file and read it in binary mode
     with open(FilePath, 'rb') as file:
         data = file.read()
 
-    data = data[-840000:] ##Remove the start
-    ADCValues = [[] for _ in range(12)]
+    data = data[- AdcDataLen * NumAdc * sample_rate * 10:]      #Get the Samples from the last 10 seconds
+    ADCValues = [[] for _ in range(NumAdc * NumChannelPerAdc)]  #Create an empty 2D array for tha ADC samples
 
-    OFFSET = 2
-    while(data[OFFSET]!=10): #Check for linefeed
-        OFFSET+=1
+    #get the offset to the first data packet
+    OFFSET = Lib.getOffset(data)
 
-    OFFSET+=1
-    while(True):
-        try:
-            
-            AdcNum = data[OFFSET + 0]
-            if(AdcNum > 2):
-                print("invalid ADC num")
-                while(data[OFFSET]!=0x0A):
-                    OFFSET+=1
-                OFFSET+=1
-                continue
+    #Extract all the ADC values from the data
+    while(OFFSET < len(data) - AdcDataLen):
+        ADCValues = Lib.getAdcVals(data, OFFSET, ADCValues)
+        OFFSET += AdcDataLen
 
-            channels=[]
-            for i in range(4):
-                channels.append(data[OFFSET + 1+3*i] * 2**16 + data[OFFSET + 2+3*i] * 2**8 + data[OFFSET + 3+3*i])
-                if(channels[i] > 2**23):
-                    channels[i] = channels[i] - 2**24
-                try:
-                    ADCValues[i+4*AdcNum].append(channels[i])
-                except:
-                    pass
-            OFFSET += 14
-        except Exception as error:
-            break
+    #skip loop iteration if not enough values are available
+    if(len(ADCValues[0]) < 1000):
+        continue
 
-    cutoff = 80  # Desired cutoff frequency (Hz)
-    order = 6  # Filter order
-
-    
-
+    #apply the notch filter and the lowpassfilter
+    cutoff = 80     # Desired cutoff frequency (Hz)
+    order = 6       # Filter order
     FilteredADCValues = [[] for _ in range(12)]
     for i in range(12):
-        FilteredADCValues[i]=remove_xHz(ADCValues[i], sample_rate,50)
-        FilteredADCValues[i] = butter_lowpass_filter(FilteredADCValues[i],cutoff,sample_rate,order)
+        FilteredADCValues[i] = Lib.remove_xHz(ADCValues[i], sample_rate,50)
+        FilteredADCValues[i] = Lib.butter_lowpass_filter(FilteredADCValues[i],cutoff,sample_rate,order)
 
-    minlen = 999999999999
-    for i in range(12):
-        if len(FilteredADCValues[i]<minlen):
-            minlen = len(FilteredADCValues[i])
-
+    #get the minimal number of samples for any channel and trim all channels to that length
+    minlen = min(len(val) for val in FilteredADCValues[:12])
     for i in range(12):
         FilteredADCValues[i]=FilteredADCValues[i][0:minlen-1]
 
-# Doesnt help with framerate which was the only reason
-#    for i in range(12):
-#        FilteredADCValues[i]=FilteredADCValues[i][19::20] #start at the 20th element (index 19) and take every 20th element from there
-
-
+    #do the plots
     if FirstLoop:
         x = np.linspace(0, 10, len(FilteredADCValues[0]))  # Assume the length of x is the same for all channels
         plt.ion()  # Turn on interactive mode
@@ -117,7 +63,6 @@ while(True):
             ax.set_title(f"Channel {i+1}")
             ax.set_xlabel("Time")
             ax.set_ylabel("Filtered Value")
-
     for i in range(12):
         ax = axs[i // 3, i % 3]
         ax.set_ylim(min(FilteredADCValues[i]), max(FilteredADCValues[i]))
@@ -127,4 +72,3 @@ while(True):
         FirstLoop = False
     plt.draw()
     plt.pause(0.1)
-    #plt.show()
